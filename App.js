@@ -1,21 +1,48 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Platform } from "react-native";
+import { FocusInput } from "./src/features/focus/FocusInput";
+import { Timer } from "./src/features/timer/Timer";
+import * as Font from "expo-font";
+import AppLoading from "expo-app-loading";
+import { colors } from "./src/utils/colors";
+import { paddingSizes } from "./src/utils/sizes";
+
+const fonts = () =>
+  Font.loadAsync({
+    "mt-bold": require("./assets/fonts/Montserrat-SemiBold.ttf"),
+    "mt-light": require("./assets/fonts/Montserrat-Light.ttf"),
+  });
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  const [font, setFont] = useState(false);
+  const [focusSubject, setFocusSubject] = useState("gardening");
+
+  if (font) {
+    return (
+      <View style={styles.container}>
+        {focusSubject ? (
+          <Timer focusSubject={focusSubject} />
+        ) : (
+          <FocusInput setFocusSubject={setFocusSubject} />
+        )}
+      </View>
+    );
+  } else {
+    return (
+      <AppLoading
+        startAsync={fonts}
+        onFinish={() => setFont(true)}
+        onError={console.warn}
+      />
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop:
+      Platform.OS === "ios" ? paddingSizes.medium : paddingSizes.medium,
+    backgroundColor: colors.paleOrange,
   },
 });
