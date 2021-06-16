@@ -15,7 +15,7 @@ const fonts = () =>
 
 export default function App() {
   const [font, setFont] = useState(false);
-  const [focusSubject, setFocusSubject] = useState("gardening");
+  const [focusSubject, setFocusSubject] = useState("you");
 
   if (font) {
     return (
