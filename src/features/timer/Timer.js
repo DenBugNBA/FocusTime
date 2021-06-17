@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Vibration, Platform } from "react-native";
 import { useKeepAwake } from "expo-keep-awake";
 
@@ -13,7 +13,7 @@ import { TimeChanger } from "./TimeChanger";
 export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
   useKeepAwake();
 
-  const [minutes, setMinutes] = useState(0.1);
+  const [minutes, setMinutes] = useState(10);
   const [isStarted, setIsStarted] = useState(false);
   const [progress, setProgress] = useState(1);
 
@@ -55,6 +55,10 @@ export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
     setProgress(1);
     setIsStarted(false);
   };
+
+  // useEffect(() => {
+  //   console.log(minutes);
+  // }, [minutes]);
 
   return (
     <View style={styles.container}>
