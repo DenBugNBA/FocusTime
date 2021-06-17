@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Platform } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { FocusInput } from "./src/features/focus/FocusInput";
+import { FocusHistory } from "./src/features/focus/FocusHistory";
 import { Timer } from "./src/features/timer/Timer";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
@@ -13,17 +15,88 @@ const fonts = () =>
     "mt-light": require("./assets/fonts/Montserrat-Light.ttf"),
   });
 
+const STATUSES = {
+  COMPLETE: 1,
+  CANCELLED: 2,
+};
+
 export default function App() {
   const [font, setFont] = useState(false);
-  const [focusSubject, setFocusSubject] = useState("you");
+  const [focusSubject, setFocusSubject] = useState(null);
+  const [focusHistory, setFocusHistory] = useState([]);
+
+  // useEffect(() => {
+  //   if (focusSubject) {
+  //     setFocusHistory([...focusHistory, focusSubject]);
+  //   }
+  // }, [focusSubject]);
+  // console.log(focusHistory);
+
+  const addFocusHistorySubjectWithStatus = (subject, status) => {
+    setFocusHistory([
+      ...focusHistory,
+      { key: String(focusHistory.length + 1), subject, status },
+    ]);
+  };
+  // console.log(focusHistory);
+
+  const onClearFocusHistory = () => {
+    setFocusHistory([]);
+  };
+
+  const saveFocusHistory = async () => {
+    try {
+      await AsyncStorage.setItem("focusHistory", JSON.stringify(focusHistory));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const loadFocusHistory = async () => {
+    try {
+      const history = await AsyncStorage.getItem("focusHistory");
+      if (history && JSON.parse(history.length)) {
+        setFocusHistory(JSON.parse(history));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    loadFocusHistory();
+  }, []);
+
+  useEffect(() => {
+    saveFocusHistory();
+  }, [focusHistory]);
 
   if (font) {
     return (
       <View style={styles.container}>
         {focusSubject ? (
-          <Timer focusSubject={focusSubject} />
+          <Timer
+            focusSubject={focusSubject}
+            onTimerEnd={() => {
+              addFocusHistorySubjectWithStatus(focusSubject, STATUSES.COMPLETE);
+              setFocusSubject(null);
+            }}
+            clearSubject={() => {
+              addFocusHistorySubjectWithStatus(
+                focusSubject,
+                STATUSES.CANCELLED
+              );
+              setFocusSubject(null);
+            }}
+          />
         ) : (
-          <FocusInput setFocusSubject={setFocusSubject} />
+          <View style={{ flex: 1 }}>
+            <FocusInput setFocusSubject={setFocusSubject} />
+            <FocusHistory
+              focusHistory={focusHistory}
+              onClear={onClearFocusHistory}
+            />
+          </View>
         )}
       </View>
     );
@@ -41,8 +114,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop:
-      Platform.OS === "ios" ? paddingSizes.medium : paddingSizes.medium,
+    paddingTop: paddingSizes.medium,
     backgroundColor: colors.paleOrange,
   },
 });

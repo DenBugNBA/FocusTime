@@ -6,10 +6,10 @@ import { fontSizes, paddingSizes } from "../../utils/sizes";
 import { colors } from "../../utils/colors";
 
 export const FocusInput = ({ setFocusSubject }) => {
-  const [tempItem, setTempItem] = useState(null);
+  const [subject, setSubject] = useState(null);
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
+      <View style={styles.innerContainer}>
         <Text style={styles.title}>What would you like to focus on?</Text>
         <View style={styles.inputContainer}>
           <TextInput
@@ -25,18 +25,18 @@ export const FocusInput = ({ setFocusSubject }) => {
               },
             }}
             onSubmitEditing={({ nativeEvent }) => {
-              setTempItem(nativeEvent.text);
-              setFocusSubject(tempItem);
+              setSubject(nativeEvent.text);
+              setFocusSubject(subject);
             }}
             onChangeText={(text) => {
-              setTempItem(text);
+              setSubject(text);
             }}
           />
           <RoundedButton
             title="+"
             size={50}
             onPress={() => {
-              setFocusSubject(tempItem);
+              setFocusSubject(subject);
             }}
           />
         </View>
@@ -47,10 +47,11 @@ export const FocusInput = ({ setFocusSubject }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  titleContainer: {
     flex: 0.5,
+    paddingTop: paddingSizes.large,
+  },
+  innerContainer: {
+    flex: 1,
     padding: Platform.OS === "android" ? paddingSizes.medium : 18,
     justifyContent: "center",
   },
