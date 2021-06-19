@@ -15,7 +15,7 @@ let key = 0; // key for re-rendering Countdown component
 export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
   useKeepAwake();
 
-  const [minutes, setMinutes] = useState(0.1);
+  const [minutes, setMinutes] = useState(0.25);
   const [isStarted, setIsStarted] = useState(false);
   const [progress, setProgress] = useState(1);
 
@@ -83,7 +83,7 @@ export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
         </Text>
       </View>
       <ProgressBar
-        color={colors.brown}
+        color={progress < 0.2 ? "#ff0000" : colors.brown}
         style={{ height: 7, marginTop: paddingSizes.medium }}
         progress={progress}
       />

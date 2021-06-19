@@ -11,6 +11,16 @@ export const Countdown = ({ minutes, isPaused, onProgress, onEnd }) => {
   const interval = useRef(null);
   const [millis, setMillis] = useState(minutesToMillis(minutes));
 
+  // const [showText, setShowText] = useState(true);
+
+  // useEffect(() => {
+  //   // Change the state every second or the time given by User.
+  //   const interval = setInterval(() => {
+  //     setShowText((showText) => !showText);
+  //   }, 500);
+  //   return () => clearInterval(interval);
+  // }, []);
+
   const countDown = () => {
     setMillis((time) => {
       if (time === 0) {
@@ -46,26 +56,30 @@ export const Countdown = ({ minutes, isPaused, onProgress, onEnd }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.countdown}>{formatTime(minute)}</Text>
-      <Text style={styles.countdown}> : </Text>
-      <Text style={styles.countdown}>{formatTime(second)}</Text>
+      <Text style={[countdownStyles(millis, minutes)]}>
+        {formatTime(minute)}
+      </Text>
+      <Text style={[countdownStyles(millis, minutes)]}> : </Text>
+      <Text style={[countdownStyles(millis, minutes)]}>
+        {formatTime(second)}
+      </Text>
     </View>
   );
 };
 
+const countdownStyles = (millis, minutes) => ({
+  fontSize: fontSizes.xxxl - 2,
+  fontFamily: "mt-bold",
+  color: millis / minutesToMillis(minutes) < 0.2 ? "#ff0000" : colors.white,
+});
 const styles = StyleSheet.create({
   container: {
     marginTop: paddingSizes.medium,
     padding: fontSizes.medium,
-    backgroundColor: colors.brown,
+    backgroundColor: "#b07a2f",
     minWidth: "90%",
     flexDirection: "row",
     justifyContent: "center",
     borderRadius: 70,
-  },
-  countdown: {
-    fontSize: fontSizes.xxxl - 2,
-    fontFamily: "mt-bold",
-    color: colors.white,
   },
 });
