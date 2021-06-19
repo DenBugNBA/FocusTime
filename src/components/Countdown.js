@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
+
 import { colors } from "../utils/colors";
 import { fontSizes, paddingSizes } from "../utils/sizes";
 
@@ -37,14 +38,12 @@ export const Countdown = ({ minutes, isPaused, onProgress, onEnd }) => {
     if (millis === 0) {
       onEnd();
     }
-    // console.log(millis / minutesToMillis(minutes));
     return () => clearInterval(interval.current);
   }, [isPaused, millis]);
 
-  // console.log(millis);
-
   const minute = Math.floor(millis / 1000 / 60) % 60;
   const second = Math.floor(millis / 1000) % 60;
+
   return (
     <View style={styles.container}>
       <Text style={styles.countdown}>{formatTime(minute)}</Text>

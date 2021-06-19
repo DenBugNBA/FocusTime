@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Vibration, Platform } from "react-native";
 import { useKeepAwake } from "expo-keep-awake";
 
@@ -10,10 +10,12 @@ import { Countdown } from "../../components/Countdown";
 import { RoundedButton } from "../../components/RoundedButton";
 import { TimeChanger } from "./TimeChanger";
 
+let key = 0; // key for re-rendering Countdown component
+
 export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
   useKeepAwake();
 
-  const [minutes, setMinutes] = useState(10);
+  const [minutes, setMinutes] = useState(0.1);
   const [isStarted, setIsStarted] = useState(false);
   const [progress, setProgress] = useState(1);
 
@@ -51,13 +53,17 @@ export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
   };
 
   const changeTime = (min) => {
-    setMinutes(min);
+    if (min === minutes) {
+      key = String(new Date().getTime());
+    } else {
+      setMinutes(min);
+    }
     setProgress(1);
     setIsStarted(false);
   };
 
   // useEffect(() => {
-  //   console.log(minutes);
+  //   // console.log(minutes);
   // }, [minutes]);
 
   return (
@@ -68,6 +74,7 @@ export const Timer = ({ focusSubject, onTimerEnd, clearSubject }) => {
           isPaused={!isStarted}
           onProgress={onProgress}
           onEnd={onEnd}
+          key={key}
         />
       </View>
       <View style={{ paddingTop: paddingSizes.xxl }}>

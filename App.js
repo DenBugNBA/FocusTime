@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Platform } from "react-native";
+import { StyleSheet, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AppLoading from "expo-app-loading";
+
+import * as Font from "expo-font";
+import { colors } from "./src/utils/colors";
+import { paddingSizes } from "./src/utils/sizes";
+
 import { FocusInput } from "./src/features/focus/FocusInput";
 import { FocusHistory } from "./src/features/focus/FocusHistory";
 import { Timer } from "./src/features/timer/Timer";
-import * as Font from "expo-font";
-import AppLoading from "expo-app-loading";
-import { colors } from "./src/utils/colors";
-import { paddingSizes } from "./src/utils/sizes";
 
 const fonts = () =>
   Font.loadAsync({
