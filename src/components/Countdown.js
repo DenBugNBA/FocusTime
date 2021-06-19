@@ -56,11 +56,14 @@ export const Countdown = ({ minutes, isPaused, onProgress, onEnd }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={[countdownStyles(millis, minutes)]}>
+      <Text style={[styles.minutesStyle, countdownStyles(millis, minutes)]}>
         {formatTime(minute)}
       </Text>
-      <Text style={[countdownStyles(millis, minutes)]}> : </Text>
-      <Text style={[countdownStyles(millis, minutes)]}>
+      <Text style={[styles.colonStyle, countdownStyles(millis, minutes)]}>
+        {" "}
+        :{" "}
+      </Text>
+      <Text style={[styles.secondsStyle, countdownStyles(millis, minutes)]}>
         {formatTime(second)}
       </Text>
     </View>
@@ -72,14 +75,32 @@ const countdownStyles = (millis, minutes) => ({
   fontFamily: "mt-bold",
   color: millis / minutesToMillis(minutes) < 0.2 ? "#ff0000" : colors.white,
 });
+
 const styles = StyleSheet.create({
   container: {
     marginTop: paddingSizes.medium,
     padding: fontSizes.medium,
     backgroundColor: "#b07a2f",
+    height: 118,
+    fontSize: 12,
     minWidth: "90%",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    alignContent: "center",
     borderRadius: 70,
+  },
+  minutesStyle: {
+    position: "absolute",
+    top: 5,
+    left: 21,
+  },
+  colonStyle: {
+    position: "absolute",
+    left: 131,
+  },
+  secondsStyle: {
+    position: "absolute",
+    top: 5,
+    left: 201,
   },
 });
