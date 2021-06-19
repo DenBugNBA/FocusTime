@@ -23,7 +23,6 @@ export const FocusHistory = ({ focusHistory, onClear }) => {
         {!!focusHistory.length && (
           <>
             <Text style={styles.title}>Your Focus history:</Text>
-
             <FlatList
               style={{ flex: 1, width: "100%" }}
               contentContainerStyle={{
@@ -32,7 +31,6 @@ export const FocusHistory = ({ focusHistory, onClear }) => {
               data={focusHistory}
               renderItem={HistoryItem}
             />
-
             <View style={styles.clearContainer}>
               <RoundedButton
                 size={75}
@@ -65,6 +63,6 @@ const styles = StyleSheet.create({
   },
   clearContainer: {
     alignItems: "center",
-    padding: paddingSizes.medium,
+    padding: paddingSizes.medium - 1,
   },
 });
