@@ -32,6 +32,6 @@ const styles = (size) =>
     },
     text: {
       color: colors.black,
-      fontSize: size / 3,
+      fontSize: size / 3.5,
     },
   });
